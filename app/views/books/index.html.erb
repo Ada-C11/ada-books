@@ -1,2 +1,11 @@
-<h1>Books#index</h1>
-<p>Find me in app/views/books/index.html.erb</p>
+<h1>Ada's Wonder Library</h1>
+
+<ul>
+<% @books.each do |book| %>
+  <li>
+    <%= book[:title] %> by 
+  </li>
+<% end %>
+</ul>
+<%# "I am shouting!".upcase %>
+<%# @name %>
