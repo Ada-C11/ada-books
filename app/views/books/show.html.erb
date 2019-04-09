@@ -1,7 +1,12 @@
 <h2>
-  <%= @book[:title] %>
+  <%= @book.title %>
 </h2>
 
 <h3>
-  <%= @book[:author] %>
+  <%= @book.author %>
 </h3>
+<p>
+  <%= @book.description %>
+</p>
+
+<a href="/books">Back to books</a>
