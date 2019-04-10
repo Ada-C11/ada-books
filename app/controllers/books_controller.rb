@@ -18,4 +18,8 @@ class BooksController < ApplicationController
       head :not_found
     end
   end
+
+  def new
+    @book = Book.new
+  end
 end
