@@ -3,7 +3,7 @@ require "test_helper"
 describe BooksController do
   it "should get index" do
     # Action
-    get "/books"
+    get books_path
     # Same:
     # get books_path
     # get books_url
@@ -21,7 +21,7 @@ describe BooksController do
       valid_book_id = 1
 
       # Act
-      get "/books/#{valid_book_id}"
+      get book_path(valid_book_id)
 
       # Assert
       must_respond_with :success
@@ -34,7 +34,7 @@ describe BooksController do
       invalid_book_id = 999
 
       # Act
-      get "/books/#{invalid_book_id}"
+      get book_path(invalid_book_id)
 
       # Assert
       must_respond_with :not_found
