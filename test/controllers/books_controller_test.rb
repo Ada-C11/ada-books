@@ -18,7 +18,8 @@ describe BooksController do
     it "should be OK to show an existing, valid book" do
 
       # Arrange
-      valid_book_id = 1
+      book = Book.create(title: "test book")
+      valid_book_id = book.id
 
       # Act
       get book_path(valid_book_id)
