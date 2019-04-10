@@ -3,10 +3,7 @@
 <ul>
 <% @books.each do |book| %>
   <li>
-    <!-- Dee change this anchor to link_to -->
-    <a href="/books/<%= book.id %>">
-      <%= book.title %> 
-    </a>
+    <%= link_to book.title, book_path(book.id) %>
     by <%= book.author %>
   </li>
 <% end %>
