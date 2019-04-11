@@ -42,6 +42,18 @@ class BooksController < ApplicationController
       # For Rails Week 1, not a requirement (not possible right now?) to test this case in controller tests
       head :not_found
     end
+  end
+
+  def destroy
+    book = Book.find_by(id:  params[:id] )
+
+    if book.nil?
+      head :not_found
+    else
+      book.destroy
+      redirect_to books_path
+    end
+
 
   end
 end

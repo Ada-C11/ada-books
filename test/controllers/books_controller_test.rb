@@ -75,4 +75,37 @@ describe BooksController do
 
     end
   end
+
+  describe "destroy" do
+    it "returns a 404 if the book is not found" do
+      invalid_id = "NOT A VALID ID"
+
+      # Act
+      # Try to do the Books#destroy action
+
+      # Assert
+      # Should respond with not found
+      # The count will change by 0, i.e. won't change
+
+
+    end
+
+    it "can delete a book" do
+      # Arrange - Create a book
+      new_book = Book.create(title: "The Martian")
+
+      expect {
+        
+        # Act
+        delete book_path(new_book.id)
+
+        # Assert
+      }.must_change "Book.count", -1
+
+      must_respond_with :redirect
+      must_redirect_to books_path
+    end
+
+
+  end
 end
