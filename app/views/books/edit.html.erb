@@ -1,17 +1,7 @@
 <h2>Form for editing an existing Book</h2>
 
-
-<%= form_with model: @book, class: 'edit-book' do |f| %>
-
-  <p>Please fill out this form to edit a new book</p>
-
-  <%= f.label :title %>
-  <%= f.text_field :title %>
-  <%= f.label :author %>
-  <%= f.text_field :author %>
-  <%= f.label :description %>
-  <%= f.text_field :description %>
-
-  <%= f.submit "Save Book", class: "book-form__submit-btn" %>
-
-<% end %>
+<%= render partial: "form", locals: {
+  form_class: "edit-book",
+  intro_text: "Use this form to edit this book info!",
+  action_name: "Edit Book"
+} %>
