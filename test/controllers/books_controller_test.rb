@@ -76,6 +76,12 @@ describe BooksController do
     end
   end
 
+  describe "update" do
+    # nominal: it should update a book and redirect to the book show page
+
+    # edge case: it should render a 404 if the book was not found
+  end
+
   describe "destroy" do
     it "returns a 404 if the book is not found" do
       invalid_id = "NOT A VALID ID"

@@ -13,5 +13,8 @@
 </p>
 
 <%= link_to "Back to All Books", books_path %>
+
+<%= link_to "Edit #{@book.title}", edit_book_path(@book.id) %>
+
 <%= link_to "Delete #{@book.title}", 
     book_path(@book.id), method: :delete %>
