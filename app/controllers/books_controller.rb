@@ -24,12 +24,7 @@ class BooksController < ApplicationController
   end
 
   def create
-    book = Book.new(
-      title: params["book"]["title"],
-      author: params["book"]["author"],
-      description: params["book"]["description"]
-      )
-
+    book = Book.new( book_params )
 
     # If the book saves correctly, then we want to redirect to the show page of that book
     # Otherwise, we should give back something about the error (for now, 404)
@@ -56,4 +51,20 @@ class BooksController < ApplicationController
 
 
   end
+
+  private
+
+  def book_params
+    # Responsible for returning strong params as Rails wants it
+    # Tells Rails that we want params to look like this nested hash, and only this nested hash
+    # {
+    #   book: {
+    #     author: "some author",
+    #     title: "some title",
+    #     description: "description"
+    #   }
+    # }
+    return params.require(:book).permit(:title, :author, :description)
+  end
+
 end
