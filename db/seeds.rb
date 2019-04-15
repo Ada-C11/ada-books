@@ -6,8 +6,48 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-Author.create( name: "Jules Verne" )
-author = Author.new(name: "Stephen King")
-author.save
+# Author.create( name: "Jules Verne" )
+# author = Author.new(name: "Stephen King")
+# author.save
 
-Author.create( name: "Sally Rooney" )
+# Author.create( name: "Sally Rooney" )
+
+
+authors = [
+    {
+        name: "Stephen King"
+    },
+    {
+        name: "William Shakespeare"
+    },
+    {
+        name: "Fredrick Douglas"
+    }
+]
+
+failed_saves = []
+authors.each do |author|
+  new_author = Author.new(author)
+  if new_author.save
+    puts "Saved #{author[:name]} Successfully"
+  else
+    failed_saves << author[:name]
+  end
+end
+
+puts "Failed Saves #{failed_saves}"
+
+books = [
+    {
+        title: "Romeo & Juliet",
+        author_id: Author.find_by(
+            name: "William Shakespeare").id,
+        description: "Romantic Play"
+    },
+    {
+        title: "My Bondage & My Freedom",
+        author_id: Author.find_by(
+            name: "Fredrick Douglas").id,
+        description: "An Autobiography"
+    }
+]
