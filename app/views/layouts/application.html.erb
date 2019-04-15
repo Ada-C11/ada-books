@@ -12,6 +12,10 @@
   <body>
     <header>
       <h1>Ada Books!</h1>
+      <section>
+        <%= link_to "Add book",
+            new_book_path  %>
+      </section>
     </header>
     <main>
       <%= yield %>
