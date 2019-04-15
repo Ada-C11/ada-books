@@ -4,8 +4,25 @@
 
   <%= f.label :title %>
   <%= f.text_field :title %>
+
   <%= f.label :author %>
-  <%= f.text_field :author %>
+  <%#= f.select :author_id, 
+        [
+          ["JK Rowling", "37"],
+          ["Leo Tolstoy", "40"],
+          ["GRR Margin", "70"]
+        ]
+  
+  %>
+
+  <%= f.select :author_id, Author.all.map {|author| [author.name, author.id] } %>
+
+  
+ <!-- > <option value="1">Stephen King</option>
+  <option value="2">Jules Verne</option>
+ --> 
+
+
   <%= f.label :description %>
   <%= f.text_field :description %>
 

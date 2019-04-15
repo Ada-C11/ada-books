@@ -5,3 +5,9 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+Author.create( name: "Jules Verne" )
+author = Author.new(name: "Stephen King")
+author.save
+
+Author.create( name: "Sally Rooney" )
