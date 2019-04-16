@@ -103,6 +103,46 @@ describe BooksController do
 
   describe "update" do
     # nominal: it should update a book and redirect to the book show page
+    it "will update an existing book" do
+      # Arrange
+      starter_input = {
+        title: "Becoming",
+        author_id: Author.create(name: "Michelle Obama").id,
+        description: "A book by the 1st lady",
+      }
+
+      book_to_update = Book.create(starter_input)
+
+      input_title = "99 Bottles of OOP" # Valid Title
+      input_author = "Sandi Metz"
+      input_description = "A look at how to design object-oriented systems"
+      test_input = {
+        "book": {
+          title: input_title,
+          author_id: Author.create(name: input_author).id,
+          description: input_description
+        }
+      }
+
+
+      # Act
+      expect {
+        patch book_path(book_to_update.id), params: test_input
+    }.wont_change "Book.count"
+    # .must_change "Book.count", 0
+
+      # Assert
+      must_respond_with :redirect
+      book_to_update.reload
+      expect(book_to_update.title).must_equal test_input[:book][:title]
+      expect(book_to_update.author.name).must_equal Author.find(test_input[:book][:author_id]).name
+      expect(book_to_update.description).must_equal test_input[:book][:description]
+    end
+
+    it "will return a bad_request (400) when asked to update with invalid data" do
+
+
+    end
 
     # edge case: it should render a 404 if the book was not found
   end
