@@ -18,7 +18,7 @@ describe BooksController do
     it "should be OK to show an existing, valid book" do
 
       # Arrange
-      book = Book.create(title: "test book")
+      book = Book.create(title: "test book", author_id: Author.create(name: "test").id)
       valid_book_id = book.id
 
       # Act
@@ -141,7 +141,39 @@ describe BooksController do
 
     it "will return a bad_request (400) when asked to update with invalid data" do
 
+    # Arrange
+    starter_input = {
+      title: "Becoming",
+      author_id: Author.create(name: "Michelle Obama").id,
+      description: "A book by the 1st lady",
+    }
 
+    book_to_update = Book.create(starter_input)
+
+    input_title = "" # Invalid Title
+    input_author = "Sandi Metz"
+    input_description = "A look at how to design object-oriented systems"
+    test_input = {
+      "book": {
+        title: input_title,
+        author_id: Author.create(name: input_author).id,
+        description: input_description
+      }
+    }
+
+
+    # Act
+    expect {
+      patch book_path(book_to_update.id), params: test_input
+  }.wont_change "Book.count"
+  # .must_change "Book.count", 0
+
+    # Assert
+    must_respond_with :bad_request
+    book_to_update.reload
+    expect(book_to_update.title).must_equal starter_input[:title]
+    expect(book_to_update.author.name).must_equal Author.find(starter_input[:author_id]).name
+    expect(book_to_update.description).must_equal starter_input[:description]
     end
 
     # edge case: it should render a 404 if the book was not found
@@ -163,7 +195,7 @@ describe BooksController do
 
     it "can delete a book" do
       # Arrange - Create a book
-      new_book = Book.create(title: "The Martian")
+      new_book = Book.create(title: "The Martian", author_id: Author.create(name: "Someone").id)
 
       expect {
         
