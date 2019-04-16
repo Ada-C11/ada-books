@@ -24,18 +24,18 @@ class BooksController < ApplicationController
   end
 
   def create
-    book = Book.new( book_params )
+    @book = Book.new( book_params )
 
     # If the book saves correctly, then we want to redirect to the show page of that book
     # Otherwise, we should give back something about the error (for now, 404)
 
-    is_successful = book.save
+    is_successful = @book.save
 
     if is_successful
-      redirect_to book_path(book.id)
+      redirect_to book_path(@book.id)
     else
-      # For Rails Week 1, not a requirement (not possible right now?) to test this case in controller tests
-      head :not_found
+
+      render :new, status: :bad_request
     end
   end
 
@@ -51,7 +51,8 @@ class BooksController < ApplicationController
     if is_successful
       redirect_to book_path(book.id)
     else
-      head :not_found
+      @book = book
+      render :edit, status: :bad_request
     end
   end
 
