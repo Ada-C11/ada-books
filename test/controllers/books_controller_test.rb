@@ -54,7 +54,7 @@ describe BooksController do
       test_input = {
         "book": {
           title: input_title,
-          author: input_author,
+          author_id: Author.create(name: input_author).id,
           description: input_description
         }
       }
@@ -68,10 +68,35 @@ describe BooksController do
       new_book = Book.find_by(title: input_title)
       expect(new_book).wont_be_nil
       expect(new_book.title).must_equal input_title
-      expect(new_book.author).must_equal input_author
+      expect(new_book.author.name).must_equal input_author
       expect(new_book.description).must_equal input_description
 
       must_respond_with :redirect
+
+    end
+
+    it "will return a 400 with an invalid book" do
+
+      # Arrange
+      input_title = "" # Invalid Title
+      input_author = "Sandi Metz"
+      input_description = "A look at how to design object-oriented systems"
+      test_input = {
+        "book": {
+          title: input_title,
+          author_id: Author.create(name: input_author).id,
+          description: input_description
+        }
+      }
+
+      # Act
+      expect {
+        post books_path, params: test_input
+    }.wont_change "Book.count"
+    # .must_change "Book.count", 0
+
+      # Assert
+      must_respond_with :bad_request
 
     end
   end
