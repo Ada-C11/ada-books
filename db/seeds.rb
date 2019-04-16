@@ -42,12 +42,18 @@ books = [
         title: "Romeo & Juliet",
         author_id: Author.find_by(
             name: "William Shakespeare").id,
-        description: "Romantic Play"
+        description: "Romantic Play",
+        publication_date: 1603
     },
     {
         title: "My Bondage & My Freedom",
         author_id: Author.find_by(
             name: "Fredrick Douglas").id,
-        description: "An Autobiography"
+        description: "An Autobiography",
+        publication_date: 1855
     }
 ]
+
+books.each do |book|
+    Book.create(book)
+end
