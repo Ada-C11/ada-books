@@ -1,12 +1,20 @@
 class BooksController < ApplicationController
   BOOKS = [
-    {title: "Hidden Figures", author: "Margot Lee Shetterly"},
-    {title: "Practical Object-Oriented Design in Ruby", author: "Sandi Metz"},
-    {title: "Kindred", author: "Octavia E. Butler"},
+    { title: "Hidden Figures", author: "Margot Lee Shetterly" },
+    { title: "Practical Object-Oriented Design in Ruby", author: "Sandi Metz" },
+    { title: "Kindred", author: "Octavia E. Butler" },
   ]
 
   def index
-    @books = Book.all.order(:title)
+    # If there exists a route param value called "author_id"...
+    # Then we can reasonably believe that we need to limit all books by author_id
+    if params[:author_id]
+      @books = Book.where(author: Author.find_by(id: params[:author_id]))
+    else
+      # If there isn't, then we can reasonably believe that all books should be ALL BOOKS!
+
+      @books = Book.all.order(:title)
+    end
   end
 
   def show
@@ -20,7 +28,14 @@ class BooksController < ApplicationController
   end
 
   def new
+    # If there exists a route param value called "author_id"...
+    # Then we can reasonably believe that we need to have that author already selected in the "new book" form
+
     @book = Book.new(title: "Default Title")
+
+    if params[:author_id]
+      @book.author = Author.find_by(id: params[:author_id])
+    end
   end
 
   def create
