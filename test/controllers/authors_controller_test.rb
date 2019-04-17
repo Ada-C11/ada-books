@@ -4,6 +4,7 @@ describe AuthorsController do
   before do
     Author.create(name: "test author")
   end
+  
   describe "index" do 
     it "should get index" do
       get authors_path
