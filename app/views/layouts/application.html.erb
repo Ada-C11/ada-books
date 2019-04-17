@@ -13,8 +13,11 @@
     <header>
       <h1>Ada Books!</h1>
       <section>
+      <%= link_to "All authors", authors_path %>
+      <%= link_to "All books", books_path %>
         <%= link_to "Add book",
             new_book_path  %>
+        <%= link_to "Add Author", new_author_path %>
       </section>
     </header>
     <main>

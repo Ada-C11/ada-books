@@ -1,0 +1,12 @@
+<h2>Authors list</h2>
+<ul>
+  <% @authors.each do |author| %>
+    <li>
+      <%= link_to author.name, author_path(author.id) %>
+      <ul>
+      <li> <%= link_to "Edit", edit_author_path(author.id) %></li>
+      <li> <%= link_to "Delete", author_path(author.id), method: :delete %></li>
+      </ul>
+    </li>
+  <% end %>
+</ul>

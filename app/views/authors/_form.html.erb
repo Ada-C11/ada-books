@@ -1,0 +1,18 @@
+
+<% if @author.errors.any? %>
+  <ul class="errors">
+    <% @author.errors.each do |column, message| %>
+      <li>
+        <strong><%= column.capitalize %></strong> <%= message %>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
+
+<%= form_with model: @author, class: form_class do |f| %>
+  <%= f.label :name %>
+  <%= f.text_field :name %>
+
+  <%= f.submit action_name, class: "book-form__submit-btn" %>
+
+<% end %>
