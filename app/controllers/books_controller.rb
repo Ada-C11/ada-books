@@ -24,7 +24,7 @@ class BooksController < ApplicationController
   end
 
   def create
-    @book = Book.new( book_params )
+    @book = Book.new(book_params)
 
     # If the book saves correctly, then we want to redirect to the show page of that book
     # Otherwise, we should give back something about the error (for now, 404)
@@ -34,7 +34,6 @@ class BooksController < ApplicationController
     if is_successful
       redirect_to book_path(@book.id)
     else
-
       render :new, status: :bad_request
     end
   end
@@ -46,7 +45,7 @@ class BooksController < ApplicationController
   def update
     book = Book.find_by(id: params[:id])
 
-    is_successful = book.update( book_params )
+    is_successful = book.update(book_params)
 
     if is_successful
       redirect_to book_path(book.id)
@@ -57,7 +56,7 @@ class BooksController < ApplicationController
   end
 
   def destroy
-    book = Book.find_by(id:  params[:id] )
+    book = Book.find_by(id: params[:id])
 
     if book.nil?
       head :not_found
@@ -65,8 +64,6 @@ class BooksController < ApplicationController
       book.destroy
       redirect_to books_path
     end
-
-
   end
 
   private
@@ -83,5 +80,4 @@ class BooksController < ApplicationController
     # }
     return params.require(:book).permit(:title, :author_id, :description)
   end
-
 end
