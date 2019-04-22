@@ -80,6 +80,7 @@ describe Book do
 
       # Act
       book.genres << new_genre
+      book.save
 
       # Assert
       expect(new_genre.books).must_include book
