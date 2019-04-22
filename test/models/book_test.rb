@@ -43,6 +43,50 @@ describe Book do
   end
 
   describe "relationships" do
+    it "belongs to an author" do
+      # Arrange
+      author = Author.create(name: "new author")
+
+      # Act
+      book.author = author
+
+      # Assert
+      expect(book.author_id).must_equal author.id
+    end
+
+    it "can set the author through the author_id" do
+      # Arrange
+      new_author = Author.create(name: "new author")
+
+      # Act
+      book.author_id = new_author.id
+
+      # Assert
+      expect(book.author).must_equal new_author
+    end
+
+    it "can have 0 genres" do
+
+      # Act
+      genres = book.genres
+
+      # Assert
+      expect(genres.length).must_equal 0
+    end
+
+    it "can have 1 or more genres by shoveling a genre into book.genres" do
+      # Arrange
+      new_genre = Genre.new name: "Fantasy"
+
+      # Act
+      book.genres << new_genre
+
+      # Assert
+      expect(new_genre.books).must_include book
+    end
+  end
+
+  describe "custom methods" do
   end
 end
 
