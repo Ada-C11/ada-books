@@ -76,7 +76,7 @@ describe Book do
 
     it "can have 1 or more genres by shoveling a genre into book.genres" do
       # Arrange
-      new_genre = Genre.new name: "Fantasy"
+      new_genre = Genre.create name: "Fantasy"
 
       # Act
       book.genres << new_genre
