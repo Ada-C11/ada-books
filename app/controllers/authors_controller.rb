@@ -60,6 +60,7 @@ class AuthorsController < ApplicationController
       render :new, status: :bad_request
     end
   end
+  
   private
 
   def author_params
