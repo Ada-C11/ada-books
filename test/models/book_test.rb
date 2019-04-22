@@ -3,12 +3,14 @@
 require "test_helper"
 
 describe Book do
-  let (:author) { Author.create(name: "test author") }
+  let (:author) { authors(:metz) }
   let (:book) {
-    Book.new title: "some title", author_id: author.id
+    # Book.find_by(title: "99 Bottles of OOP")
+    books(:oop)
   }
 
   it "must be valid" do
+    book = books(:oop)
     valid_book = book.valid?
     # valid_book = book.save
     expect(valid_book).must_equal true
@@ -31,14 +33,14 @@ describe Book do
 
     it "requires a unique title" do
       # Arrange
-      Book.create(title: book.title, author_id: Author.first.id)
+      duplicate_book = Book.new(title: book.title, author_id: Author.first.id)
 
       # Act-Assert
-      expect(book.save).must_equal false
+      expect(duplicate_book.save).must_equal false
 
       # Assert
-      expect(book.errors.messages).must_include :title
-      expect(book.errors.messages[:title]).must_equal ["has already been taken"]
+      expect(duplicate_book.errors.messages).must_include :title
+      expect(duplicate_book.errors.messages[:title]).must_equal ["has already been taken"]
     end
   end
 

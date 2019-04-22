@@ -1,0 +1,10 @@
+oop:
+  title: 99 Bottles of OOP
+  author: metz
+  description: Great book on OOP
+
+oop_part_two:
+  title: Another OOP Book
+  author: steve
+  description: Not as awesome as 99 bottles of oop
+
