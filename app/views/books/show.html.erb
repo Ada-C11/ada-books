@@ -6,7 +6,27 @@
   <%= @book.author.name %>
 </h3>
 
-<%= image_tag "samson.jpg", alt: "Image of cat named Samson" %>
+<section>
+  <h4>
+    Genres
+  </h4>
+
+  <% if @book.genres.any? %>
+    <ul>
+
+      <% @book.genres.each do |genre| %>
+        <li><%= genre.name %></li>
+      <% end %>
+
+    </ul>
+  <% else %>
+    <p>There are no genres assigned to this book</p>
+  <% end %>
+
+</section>
+
+
+
 
 <p>
   <%= @book.description %>
@@ -18,3 +38,5 @@
 
 <%= link_to "Delete #{@book.title}", 
     book_path(@book.id), method: :delete %>
+
+<%= image_tag "samson.jpg", alt: "Image of cat named Samson" %>

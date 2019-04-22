@@ -90,9 +90,10 @@ class BooksController < ApplicationController
     #   book: {
     #     author: "some author",
     #     title: "some title",
-    #     description: "description"
+    #     description: "description",
+    #     genre_ids: [...]
     #   }
     # }
-    return params.require(:book).permit(:title, :author_id, :description)
+    return params.require(:book).permit(:title, :author_id, :description, genre_ids: [])
   end
 end

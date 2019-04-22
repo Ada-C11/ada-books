@@ -37,6 +37,9 @@
   <%= f.label :description %>
   <%= f.text_field :description %>
 
+  <%= f.label :genres %>
+  <%= collection_check_boxes(:book, :genre_ids, Genre.all, :id, :name) %>
+
   <%= f.submit action_name, class: "book-form__submit-btn" %>
 
 <% end %>
