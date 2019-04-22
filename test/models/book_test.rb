@@ -2,6 +2,9 @@
 
 require "test_helper"
 
+# What we're doing
+#  - Update the genre relationship test to use fixtures
+
 describe Book do
   let (:author) { authors(:metz) }
   let (:book) {
@@ -78,11 +81,10 @@ describe Book do
 
     it "can have 1 or more genres by shoveling a genre into book.genres" do
       # Arrange
-      new_genre = Genre.create name: "Fantasy"
+      new_genre = genres(:one)
 
       # Act
       book.genres << new_genre
-      book.save
 
       # Assert
       expect(new_genre.books).must_include book
