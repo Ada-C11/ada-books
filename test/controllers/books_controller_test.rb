@@ -27,7 +27,7 @@ describe BooksController do
       must_respond_with :success
     end
 
-    it "should give a 404 instead of showing a non-existant, invalid book" do
+    it "should give a flash notice instead of showing a non-existant, invalid book" do
 
       # Arrange
       book = books(:oop_part_two)
@@ -38,7 +38,8 @@ describe BooksController do
       get book_path(invalid_book_id)
 
       # Assert
-      must_respond_with :not_found
+      must_respond_with :redirect
+      expect(flash[:error]).must_equal "Unknown book"
     end
   end
 
