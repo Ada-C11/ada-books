@@ -14,7 +14,7 @@
       <h1>Ada Books!</h1>
       <% if flash.count > 0 %>
         <section class="flash">
-          <div class="alert">
+          <div class="alert alert-danger">
           <% flash.each do |name, message| %>
             <% if message.class == Array %>
               <ul>
@@ -32,8 +32,8 @@
         </section>
       <% end %>
       <section>
-      <%= link_to "All authors", authors_path %>
-      <%= link_to "All books", books_path %>
+      <%= link_to "All authors", authors_path, class: "btn btn-primary" %>
+      <%= link_to "All books", books_path, class: "btn btn-danger" %>
         <%= link_to "Add book",
             new_book_path  %>
         <%= link_to "Add Author", new_author_path %>

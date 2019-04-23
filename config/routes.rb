@@ -8,5 +8,10 @@ Rails.application.routes.draw do
     resources :books, only: [:index, :new]
   end
 
-  patch "/books/:id/read", to: "books#mark_read", as: "mark_read"
+  # patch "/books/:id/read", to: "books#mark_read", as: "mark_read"
+
+  get "/login", to: "users#login_form", as: "login"
+  post "/login", to: "users#login"
+  post "/logout", to: "users#logout", as: "logout"
+  get "/users/current", to: "users#current", as: "current_user"
 end
