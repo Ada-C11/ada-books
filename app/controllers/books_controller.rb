@@ -68,12 +68,12 @@ class BooksController < ApplicationController
 
     if book.nil?
       flash[:error] = "That book does not exist"
-      redirect_to books_path
     else
       book.destroy
       flash[:success] = "#{book.title} deleted"
-      redirect_to books_path
     end
+
+    redirect_to books_path
   end
 
   private
