@@ -1,4 +1,6 @@
 class BooksController < ApplicationController
+  before_action :find_individual_book, only: [:show, :edit, :update, :destroy]
+
   def index
     if params[:author_id]
       @books = Book.where(author: Author.find_by(id: params[:author_id]))
@@ -8,8 +10,6 @@ class BooksController < ApplicationController
   end
 
   def show
-    book_id = params[:id]
-    @book = Book.find_by(id: book_id)
     if @book.nil?
       flash[:error] = "Unknown book"
 
@@ -26,15 +26,15 @@ class BooksController < ApplicationController
   end
 
   def create
-    @book = Book.new(book_params)
+    book = Book.new(book_params)
 
-    is_successful = @book.save
+    is_successful = book.save
 
     if is_successful
       flash[:success] = "Book added successfully"
-      redirect_to book_path(@book.id)
+      redirect_to book_path(book.id)
     else
-      @book.errors.messages.each do |field, messages|
+      book.errors.messages.each do |field, messages|
         flash.now[field] = messages
       end
 
@@ -43,19 +43,15 @@ class BooksController < ApplicationController
   end
 
   def edit
-    @book = Book.find_by(id: params[:id])
   end
 
   def update
-    book = Book.find_by(id: params[:id])
-
-    is_successful = book.update(book_params)
+    is_successful = @book.update(book_params)
 
     if is_successful
       flash[:success] = "book updated successfully"
-      redirect_to book_path(book.id)
+      redirect_to book_path(@book.id)
     else
-      @book = book
       @book.errors.messages.each do |field, messages|
         flash.now[field] = messages
       end
@@ -64,19 +60,21 @@ class BooksController < ApplicationController
   end
 
   def destroy
-    book = Book.find_by(id: params[:id])
-
-    if book.nil?
+    if @book.nil?
       flash[:error] = "That book does not exist"
     else
-      book.destroy
-      flash[:success] = "#{book.title} deleted"
+      @book.destroy
+      flash[:success] = "#{@book.title} deleted"
     end
 
     redirect_to books_path
   end
 
   private
+
+  def find_individual_book
+    @book = Book.find_by(id: params[:id])
+  end
 
   def book_params
     return params.require(:book).permit(:title, :author_id, :description, genre_ids: [])
