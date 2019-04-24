@@ -1,10 +1,15 @@
 <h2 >Ada's Wonder Library</h2>
 
+<%= foo("<small class='btn btn-success'>I have HTML in my user input! I'm malicious! hahahahha</small>") %>
+
 <ul>
 <% @books.each do |book| %>
   <li>
     <%= link_to book.title, book_path(book.id) %>
     by <%= book.author.name %>
+    <div class="book-list-item__date">
+      <%= readable_date(book.created_at) %>
+    </div>
   </li>
 <% end %>
 </ul>
