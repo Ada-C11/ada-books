@@ -9,10 +9,7 @@ describe UsersController do
     it "responds with success if a user is logged in" do
 
       # Arrange: We have to log in as a user by NOT manipulating session... we will do a login action!
-      logged_in_user = users(:dee)
-      post login_path, params: { user: { username: logged_in_user.username } }
-
-      # expect(session[:user_id]).must_equal logged_in_user.id
+      logged_in_user = perform_login
 
       # Act: We need to still make a request to get to the users controller current action
       get current_user_path
