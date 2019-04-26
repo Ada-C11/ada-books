@@ -72,7 +72,29 @@ describe BooksController do
 
       must_respond_with :redirect
     end
+    it "will give a 400 error with invalid params" do
 
+      # Arrange
+      input_title = "" # invalid title
+      input_author = "Sandi Metz"
+      input_description = "A look at how to design object-oriented systems"
+      test_input = {
+        "book": {
+          title: input_title,
+          author_id: Author.create(name: input_author).id,
+          description: input_description,
+        },
+      }
+
+      # Act
+      expect {
+        post books_path, params: test_input
+      }.wont_change "Book.count"
+
+      # Assert
+      expect(flash[:title]).must_equal ["can't be blank"]
+      must_respond_with :bad_request
+    end
     it "will return a 400 with an invalid book" do
 
       # Arrange
