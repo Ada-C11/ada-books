@@ -20,6 +20,27 @@ class UsersController < ApplicationController
     redirect_to root_path
   end
 
+  def create
+    auth_hash = request.env["omniauth.auth"]
+
+    user = User.find_by uid: auth_hash[:uid], provider: "github"
+
+    if user.nil?
+      user = User.build_from_github(auth_hash)
+    end
+
+    if user.save
+      flash[:success] = "Logged in as #{user.username}"
+    else
+      flash[:error] = "Could not log in with account #{user.errors.messages}"
+      return redirect_to root_path
+    end
+
+    session[:user_id] = user.id
+
+    redirect_to root_path
+  end
+
   def current
     @user = User.find_by(id: session[:user_id])
     if @user.nil?
