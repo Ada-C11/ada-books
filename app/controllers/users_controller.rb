@@ -5,17 +5,40 @@ class UsersController < ApplicationController
 
   def login
     username = params[:user][:username]
-    user = User.find_by(username: username)
-    user = User.create(username: username) if user.nil?
 
-    if user.id
-      session[:user_id] = user.id
-      flash[:alert] = "#{user.username} logged in"
-      redirect_to root_path
+    user = User.find_by(username: username)
+    if user.nil?
+      flash_msg = "Welcome new user"
     else
-      flash[:error] = "Unable to log in"
-      redirect_to root_path
+      flash_msg = "Welcome back #{username}"
     end
+
+    user ||= User.create(username: username)
+
+    session[:user_id] = user.id
+    flash[:success] = flash_msg
+    redirect_to root_path
+  end
+
+  def create
+    auth_hash = request.env["omniauth.auth"]
+
+    user = User.find_by uid: auth_hash[:uid], provider: "github"
+
+    if user.nil?
+      user = User.build_from_github(auth_hash)
+    end
+
+    if user.save
+      flash[:success] = "Logged in as #{user.username}"
+    else
+      flash[:error] = "Could not log in with account #{user.errors.messages}"
+      return redirect_to root_path
+    end
+
+    session[:user_id] = user.id
+
+    redirect_to root_path
   end
 
   def current
