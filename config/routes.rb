@@ -14,6 +14,8 @@ Rails.application.routes.draw do
   # post "/login", to: "users#login"
   # post "/logout", to: "users#logout", as: "logout"
 
+  delete "/logout", to: "users#logout", as: "logout"
+
   get "/users/current", to: "users#current", as: "current_user"
   get "/auth/github", as: "github_login"
   get "/auth/:provider/callback", to: "users#create"
