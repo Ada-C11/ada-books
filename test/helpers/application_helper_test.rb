@@ -19,7 +19,7 @@ describe ApplicationHelper do
       # Debatable:
       #  - Would I check if the method "time_ago_in_words" works correctly?
       expect(result).must_include date.to_s
-      expect(result).must_include "15 days ago"
+      expect(result).must_include "14 days ago"
     end
 
     it "gives back the string [unknown] when date is nil" do
