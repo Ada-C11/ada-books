@@ -2,6 +2,13 @@
 
 dee:
   username: tildeee
+  uid: 123
+  provider: github
+  email: dee@tildee.com
 
 two:
-  username: MyString
+  username: devin
+  uid: 321
+  provider: github
+  email: devin@dev.net
+
