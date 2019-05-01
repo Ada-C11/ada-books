@@ -11,7 +11,6 @@ Minitest::Reporters.use!(
   Minitest.backtrace_filter
 )
 
-
 # To add Capybara feature tests add `gem "minitest-rails-capybara"`
 # to the test group in the Gemfile and uncomment the following:
 # require "minitest/rails/capybara"
@@ -24,18 +23,31 @@ class ActiveSupport::TestCase
   fixtures :all
   # Add more helper methods to be used by all tests here...
 
+  def setup
+    # Tell OmniAuth Gem that we're in Test Mode
+    OmniAuth.config.test_mode = true
+  end
+
+  def mock_auth_hash(user)
+    return {
+             provider: user.provider,
+             uid: user.uid,
+             info: {
+               email: user.email,
+               nickname: user.username,
+             },
+           }
+  end
+
   def perform_login(user = nil)
     user ||= users(:dee)
 
-    login_data = {
-      user: {
-        username: user.username,
-      },
-    }
-    post login_path, params: login_data
+    OmniAuth.config.mock_auth[:github] = OmniAuth::AuthHash.new(mock_auth_hash(user))
 
-    # Verify the user ID was saved - if that didn't work, this test is invalid
-    expect(session[:user_id]).must_equal user.id
+    get auth_callback_path(:github)
+
+    must_respond_with :redirect
+    must_redirect_to root_path
 
     return user
   end
