@@ -231,32 +231,51 @@ describe BooksController do
   end
 
   describe "destroy" do
-    it "returns a 404 if the book is not found" do
-      invalid_id = "NOT A VALID ID"
+    describe "Logged in authenticated users" do
+      before do
+        perform_login(users(:dee))
+      end
 
-      # Act
-      # Try to do the Books#destroy action
-
-      # Assert
-      # Should respond with not found
-      # The count will change by 0, i.e. won't change
-
-    end
-
-    it "can delete a book" do
-      # Arrange - Create a book
-      new_book = Book.create(title: "The Martian", author_id: Author.create(name: "Someone").id)
-
-      expect {
+      it "returns a 404 if the book is not found" do
+        invalid_id = "NOT A VALID ID"
 
         # Act
-        delete book_path(new_book.id)
+        # Try to do the Books#destroy action
 
         # Assert
-      }.must_change "Book.count", -1
+        # Should respond with not found
+        # The count will change by 0, i.e. won't change
 
-      must_respond_with :redirect
-      must_redirect_to books_path
+      end
+
+      it "can delete a book" do
+        # Arrange - Create a book
+        new_book = Book.create(title: "The Martian", author_id: Author.create(name: "Someone").id)
+
+        expect {
+
+          # Act
+          delete book_path(new_book.id)
+
+          # Assert
+        }.must_change "Book.count", -1
+
+        must_respond_with :redirect
+        must_redirect_to books_path
+      end
+    end
+
+    describe "guest user (not logged in)" do
+      it "can delete a book" do
+        new_book = Book.create(title: "The Martian", author_id: Author.create(name: "Someone").id)
+
+        expect {
+          delete book_path(new_book.id)
+        }.wont_change "Book.count"
+
+        must_respond_with :redirect
+        must_redirect_to root_path
+      end
     end
   end
 end
