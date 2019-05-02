@@ -155,13 +155,12 @@ describe BooksController do
   end
 
   describe "update" do
-
     describe "Logged in users (authenticated, authorized)" do
       before do
-        perform_login( users(:dee) )
+        perform_login(users(:dee))
       end
 
-          # nominal: it should update a book and redirect to the book show page
+      # nominal: it should update a book and redirect to the book show page
       it "will update an existing book" do
         # Arrange
         starter_input = {
@@ -307,7 +306,7 @@ describe BooksController do
     end
 
     describe "guest user (not logged in)" do
-      it "can delete a book" do
+      it "redirects to the root path" do
         new_book = Book.create(title: "The Martian", author_id: Author.create(name: "Someone").id)
 
         expect {
