@@ -1,5 +1,6 @@
 class BooksController < ApplicationController
   before_action :find_individual_book, only: [:show, :edit, :update, :destroy]
+  before_action :require_login, only: [:new, :create, :edit, :update, :destroy]
 
   def index
     if params[:author_id]
