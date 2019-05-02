@@ -44,79 +44,113 @@ describe BooksController do
   end
 
   describe "create" do
-    it "will save a new book and redirect if given valid inputs" do
+    describe "Logged in users" do
+      before do
+        perform_login(users(:dee))
+      end
 
-      # Arrange
-      input_title = "Practical Object Oriented Programming in Ruby"
-      input_author = "Sandi Metz"
-      input_description = "A look at how to design object-oriented systems"
-      test_input = {
-        "book": {
-          title: input_title,
-          author_id: Author.create(name: input_author).id,
-          description: input_description,
-        },
-      }
+      it "will save a new book and redirect if given valid inputs" do
 
-      # Act
-      expect {
-        post books_path, params: test_input
-      }.must_change "Book.count", 1
+        # Arrange
+        input_title = "Practical Object Oriented Programming in Ruby"
+        input_author = "Sandi Metz"
+        input_description = "A look at how to design object-oriented systems"
+        test_input = {
+          "book": {
+            title: input_title,
+            author_id: Author.create(name: input_author).id,
+            description: input_description,
+          },
+        }
 
-      # Assert
-      new_book = Book.find_by(title: input_title)
-      expect(new_book).wont_be_nil
-      expect(new_book.title).must_equal input_title
-      expect(new_book.author.name).must_equal input_author
-      expect(new_book.description).must_equal input_description
+        # Act
+        expect {
+          post books_path, params: test_input
+        }.must_change "Book.count", 1
 
-      must_respond_with :redirect
+        # Assert
+        new_book = Book.find_by(title: input_title)
+        expect(new_book).wont_be_nil
+        expect(new_book.title).must_equal input_title
+        expect(new_book.author.name).must_equal input_author
+        expect(new_book.description).must_equal input_description
+
+        must_respond_with :redirect
+      end
+      it "will give a 400 error with invalid params" do
+
+        # Arrange
+        input_title = "" # invalid title
+        input_author = "Sandi Metz"
+        input_description = "A look at how to design object-oriented systems"
+        test_input = {
+          "book": {
+            title: input_title,
+            author_id: Author.create(name: input_author).id,
+            description: input_description,
+          },
+        }
+
+        # Act
+        expect {
+          post books_path, params: test_input
+        }.wont_change "Book.count"
+
+        # Assert
+        expect(flash[:title]).must_equal ["can't be blank"]
+        must_respond_with :bad_request
+      end
+      it "will return a 400 with an invalid book" do
+
+        # Arrange
+        input_title = "" # Invalid Title
+        input_author = "Sandi Metz"
+        input_description = "A look at how to design object-oriented systems"
+        test_input = {
+          "book": {
+            title: input_title,
+            author_id: Author.create(name: input_author).id,
+            description: input_description,
+          },
+        }
+
+        # Act
+        expect {
+          post books_path, params: test_input
+        }.wont_change "Book.count"
+        # .must_change "Book.count", 0
+
+        # Assert
+        must_respond_with :bad_request
+      end
     end
-    it "will give a 400 error with invalid params" do
 
-      # Arrange
-      input_title = "" # invalid title
-      input_author = "Sandi Metz"
-      input_description = "A look at how to design object-oriented systems"
-      test_input = {
-        "book": {
-          title: input_title,
-          author_id: Author.create(name: input_author).id,
-          description: input_description,
-        },
-      }
+    describe "Not Logged in users (Guest Users)" do
+      it "will redirect to some page if the user attempts to do this with any input" do
+        # Arrange
+        input_title = "Practical Object Oriented Programming in Ruby"
+        input_author = "Sandi Metz"
+        input_description = "A look at how to design object-oriented systems"
+        test_input = {
+          "book": {
+            title: input_title,
+            author_id: Author.create(name: input_author).id,
+            description: input_description,
+          },
+        }
 
-      # Act
-      expect {
-        post books_path, params: test_input
-      }.wont_change "Book.count"
+        # Act
+        expect {
+          post books_path, params: test_input
+        }.wont_change "Book.count"
 
-      # Assert
-      expect(flash[:title]).must_equal ["can't be blank"]
-      must_respond_with :bad_request
-    end
-    it "will return a 400 with an invalid book" do
+        # Assert
+        new_book = Book.find_by(title: input_title)
+        expect(new_book).must_equal nil
 
-      # Arrange
-      input_title = "" # Invalid Title
-      input_author = "Sandi Metz"
-      input_description = "A look at how to design object-oriented systems"
-      test_input = {
-        "book": {
-          title: input_title,
-          author_id: Author.create(name: input_author).id,
-          description: input_description,
-        },
-      }
-
-      # Act
-      expect {
-        post books_path, params: test_input
-      }.wont_change "Book.count"
-      # .must_change "Book.count", 0
-
-      # Assert
-      must_respond_with :bad_request
+        must_respond_with :redirect
+        must_redirect_to root_path
+      end
     end
   end
 
